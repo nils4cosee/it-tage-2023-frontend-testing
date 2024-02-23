@@ -1,4 +1,3 @@
-import { describe, expect, it } from "vitest";
 import { computeMedian, computeSum } from "@/statistics/statistics.ts";
 
 describe("statistics", () => {

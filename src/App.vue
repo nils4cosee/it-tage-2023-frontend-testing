@@ -1,15 +1,14 @@
 <template>
-  <div>
-    <nav>
-      <ul>
-        <li><RouterLink to="/">Todos</RouterLink></li>
-      </ul>
-      <ul>
-        <li>Test:</li>
-        <li><RouterLink to="/test/clipboard">Clipboard</RouterLink></li>
-      </ul>
-    </nav>
+  <DefaultLayout
+    :navigation="[
+      { label: 'Todos', to: '/' },
+      { label: 'Clipboard Test-Page', to: '/test/clipboard' },
+    ]"
+  >
     <RouterView />
-  </div>
+  </DefaultLayout>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import DefaultLayout from "@/layouts/DefaultLayout.vue";
+</script>
+<style lang="scss" scoped></style>

@@ -1,4 +1,3 @@
-import { describe, it, expect } from "vitest";
 import { renderComponent } from "@/test-utils/renderComponent.test-helper.ts";
 import NumberStatistics from "@/statistics/NumberStatistics.vue";
 import { dom } from "@/test-utils/dom.test-helper.ts";

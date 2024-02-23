@@ -1,7 +1,5 @@
 import { createApp } from "vue";
-import "@/mvp.css";
-import "@/main.css";
-import "@/mvp-theme.css";
+import "@/main.scss";
 
 import App from "./App.vue";
 import { addNewTodo, updateTodo } from "@/store/todoStore.ts";

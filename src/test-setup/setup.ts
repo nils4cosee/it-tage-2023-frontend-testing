@@ -1,5 +1,7 @@
+/// <reference types="vitest/globals" />
+
 import "@testing-library/jest-dom/vitest";
-import { vi } from "vitest";
+
 import { muteConsoleWarnings } from "./init/mute-console-warnings";
 import { fetch } from "cross-fetch";
 // Setup mock api for every test

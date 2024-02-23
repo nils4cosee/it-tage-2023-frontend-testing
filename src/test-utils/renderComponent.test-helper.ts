@@ -1,13 +1,16 @@
 import { mount, VueWrapper } from "@vue/test-utils";
-import { afterEach, beforeEach } from "vitest";
+
 import { ComponentConstructor } from "@/test-utils/types.ts";
-import { createMyRouter } from "@/router/router.ts";
+import { testRouter } from "@/test-utils/testRouter.test-helper.ts";
 
 export interface RenderComponentReturn {
   wrapper: VueWrapper;
 }
 
 type ComponentProps<T extends ComponentConstructor> = InstanceType<T>["$props"];
+type ComponentSlots<T extends ComponentConstructor> = {
+  [X in keyof InstanceType<T>["$slots"]]: string;
+};
 
 let wrappers: VueWrapper[] = [];
 const appDiv = document.createElement("div");
@@ -22,13 +25,15 @@ document.body.append(appDiv);
 // More setup to be expected here
 export function renderComponent<T extends ComponentConstructor>(
   component: T,
-  props: ComponentProps<T> = {},
+  props?: ComponentProps<T>,
+  slots?: ComponentSlots<T>,
 ): RenderComponentReturn {
   const wrapper = mount(component, {
     props,
+    slots,
     attachTo: appDiv,
     global: {
-      plugins: [createMyRouter()],
+      plugins: [testRouter],
     },
   });
 

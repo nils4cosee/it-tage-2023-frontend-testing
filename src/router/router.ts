@@ -7,7 +7,7 @@ export function createMyRouter() {
       { path: "/", component: () => import("@/pages/TodosPage.vue") },
       {
         path: "/test/clipboard",
-        component: import("@/pages/test/ClipboardPage.vue"),
+        component: () => import("@/pages/test/ClipboardPage.vue"),
       },
     ],
   });

@@ -1,8 +1,4 @@
-import { describe, expect, it } from "vitest";
-import {
-  sentRequests,
-  useRequestHandlers,
-} from "@/test-utils/mock-api.test-helper.ts";
+import { sentRequests, useHandler } from "@/test-utils/mock-api.test-helper.ts";
 import { http, HttpResponse } from "msw";
 import { baseApiUrl } from "@/backend/config.ts";
 import { Todo } from "@/model/todo.ts";
@@ -10,7 +6,7 @@ import { mockGetTodoEndpoint } from "@/test-utils/mock-requestHandlers/todos.get
 
 describe("mock-api", () => {
   it("mocks response correctly", async () => {
-    useRequestHandlers(
+    useHandler(
       http.get("http://localhost:3000/some/request", () =>
         HttpResponse.json({ success: true }),
       ),
@@ -22,7 +18,7 @@ describe("mock-api", () => {
   });
 
   it("collects sent requests", async () => {
-    useRequestHandlers(
+    useHandler(
       http.post("http://localhost:3000/echo", async () =>
         HttpResponse.json({ success: true }),
       ),
@@ -45,7 +41,7 @@ describe("mock-api", () => {
   });
 
   it("overrides default mocks", async () => {
-    useRequestHandlers(mockGetTodoEndpoint({ name: "different name" }));
+    useHandler(mockGetTodoEndpoint({ name: "different name" }));
     const todo = await window.fetch(`${baseApiUrl}/todos/abc`);
     expect(await todo.json()).toEqual({
       id: "abc",

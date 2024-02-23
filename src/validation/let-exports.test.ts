@@ -1,4 +1,3 @@
-import { expect, test } from "vitest";
 import { setX, x } from "@/validation/let-exports.ts";
 
 // exploratory test to verify that user.test-helper and mock-api.test-helper will work correctly

@@ -1,5 +1,5 @@
 import { setupServer } from "msw/node";
-import { beforeEach } from "vitest";
+
 import { RequestHandler } from "msw";
 import { mockGetTodoEndpoint } from "@/test-utils/mock-requestHandlers/todos.get.test-helper.ts";
 
@@ -11,7 +11,7 @@ const server = setupServer(mockGetTodoEndpoint());
 
 // Sadly, it does not support testing which requests have been captured,
 // We do this by storing the required data in an array that can be verified.
-// In order to check wether the correct requests are sent to the backend.
+// In order to check whether the correct requests are sent to the backend.
 // Usually, you should not do this:
 // Have a look at https://mswjs.io/docs/best-practices/avoid-request-assertions
 // for reasoning and exceptions.
@@ -28,6 +28,6 @@ beforeEach(() => {
 });
 
 // If you need a specific response for an endpoint, you can override the default ones here
-export function useRequestHandlers(...handlers: RequestHandler[]) {
+export function useHandler(...handlers: RequestHandler[]) {
   server.use(...handlers);
 }
