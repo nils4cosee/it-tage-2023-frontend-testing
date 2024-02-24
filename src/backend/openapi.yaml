@@ -1,0 +1,105 @@
+openapi: 3.0.0
+info:
+  title: Diary
+  description: |-
+    This is a sample app to for a diary that you can write every day
+  contact:
+    email: npm@knappi.org
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+  version: "1.0"
+externalDocs:
+  description: About the project
+  url: https://github.com/nknapp/demo
+paths:
+  /diary/{date}:
+    parameters:
+      - name: date
+        in: path
+        required: true
+        schema:
+          type: string
+          format: date
+    get:
+      summary: Fetch the diary of a given day
+      operationId: getDayEntry
+      security:
+        - diary_auth: ["read:diary"]
+      responses:
+        '200':
+          description: Sucessful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DiaryEntryRead"
+        '400':
+          description: Invalid date
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Update the diary for a day
+      operationId: updateDayEntry
+      security:
+        - diary_auth: ["write:diary"]
+      requestBody:
+        description: Update an existent pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiaryEntryUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiaryEntryRead'
+        '400':
+          description: Invalid date or request body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+    DiaryEntryBase:
+      type: object
+      properties:
+        sleepDurationHours:
+          title: How long did you sleep last night (hours)?
+          type: number
+        workDurationHours:
+          title: How long did you work today (hours)?
+          type: number
+        freeText:
+          title: What happened today?
+          type: string
+    DiaryEntryRead:
+      allOf:
+        - $ref: "#/components/schemas/DiaryEntryBase"
+    DiaryEntryUpdate:
+      allOf:
+        - $ref: "#/components/schemas/DiaryEntryBase"
+  securitySchemes:
+    diary_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://diary.knappi.org/oauth/authorize
+          scopes:
+            write:diary: modify diary entries in your account
+            read:diary: read your diary
