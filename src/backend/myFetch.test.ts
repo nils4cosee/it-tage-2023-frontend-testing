@@ -1,4 +1,4 @@
-import { apiGet } from "./fetchFromApi.ts";
+import { myFetch } from "./myFetch.ts";
 import { useHandler } from "@/test-utils/mock-api.test-helper.ts";
 import { http, HttpResponse } from "msw";
 import { baseApiUrl } from "@/backend/config.ts";
@@ -12,7 +12,7 @@ describe("apiGet", () => {
         });
       }),
     );
-    const response = await apiGet("/echo/abc");
+    const response = await myFetch("/echo/abc");
 
     expect(await response.json()).toEqual({ echo: "abc" });
   });
