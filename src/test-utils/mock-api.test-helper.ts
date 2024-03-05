@@ -1,13 +1,16 @@
 import { setupServer } from "msw/node";
 
-import { RequestHandler } from "msw";
-import { mockGetTodoEndpoint } from "@/test-utils/mock-requestHandlers/todos.get.test-helper.ts";
+import { http, HttpResponse, RequestHandler } from "msw";
 
 // This is a short example of how the mock-service-worker can be used.
 
 // Here, you can add default request handlers for all endpoints that are called
 // from anywhere in tne API
-const server = setupServer(mockGetTodoEndpoint());
+const server = setupServer(
+  http.get("/test-endpoint/:number", ({ params }) => {
+    return HttpResponse.json({ number: Number(params["number"]) });
+  }),
+);
 
 // Sadly, it does not support testing which requests have been captured,
 // We do this by storing the required data in an array that can be verified.

@@ -1,8 +1,6 @@
 import { sentRequests, useHandler } from "@/test-utils/mock-api.test-helper.ts";
 import { http, HttpResponse } from "msw";
 import { baseApiUrl } from "@/backend/config.ts";
-import { Todo } from "@/model/todo.ts";
-import { mockGetTodoEndpoint } from "@/test-utils/mock-requestHandlers/todos.get.test-helper.ts";
 
 describe("mock-api", () => {
   it("mocks response correctly", async () => {
@@ -32,21 +30,21 @@ describe("mock-api", () => {
   });
 
   it("uses default mocks if non are present", async () => {
-    const todo = await window.fetch(`${baseApiUrl}/todos/abc`);
+    const todo = await window.fetch(`${baseApiUrl}/test-endpoint/1`);
     expect(await todo.json()).toEqual({
-      id: "abc",
-      name: "name-abc",
-      description: "description-abc",
-    } satisfies Todo);
+      number: 1,
+    });
   });
 
-  it("overrides default mocks", async () => {
-    useHandler(mockGetTodoEndpoint({ name: "different name" }));
-    const todo = await window.fetch(`${baseApiUrl}/todos/abc`);
+  it("overrides default mocks if present", async () => {
+    useHandler(
+      http.get("/test-endpoint/:number", ({ params }) => {
+        return HttpResponse.json({ number: Number(params["number"]) + 1 });
+      }),
+    );
+    const todo = await window.fetch(`${baseApiUrl}/test-endpoint/1`);
     expect(await todo.json()).toEqual({
-      id: "abc",
-      name: "different name",
-      description: "description-abc",
-    } satisfies Todo);
+      number: 2,
+    });
   });
 });
